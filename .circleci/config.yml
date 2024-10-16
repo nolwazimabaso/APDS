@@ -13,9 +13,17 @@ jobs:
   sonarqube:
     working_directory: ~/build
     docker:
-      - image: sonarsource/sonar-scanner-cli  # Use the official SonarScanner image
+      - image: ubuntu:latest  # You can choose any other image that fits your needs
     resource_class: small
     steps:
+      - run: |
+          apt-get update && \
+          apt-get install -y wget unzip && \
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/4.6.2.2472/sonar-scanner-cli-4.6.2.2472-linux.zip && \
+          unzip sonar-scanner-cli-4.6.2.2472-linux.zip && \
+          mv sonar-scanner-4.6.2.2472-linux /opt/sonar-scanner && \
+          echo 'export PATH=$PATH:/opt/sonar-scanner/bin' >> ~/.bashrc && \
+          source ~/.bashrc
       - run: find .
       - attach_workspace:
           at: ~/workspace
