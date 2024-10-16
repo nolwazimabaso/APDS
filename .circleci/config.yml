@@ -1,7 +1,5 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
 jobs:
   say-hello:
     docker:
@@ -15,10 +13,9 @@ jobs:
   sonarqube:
     working_directory: ~/build
     docker:
-      - image: ubuntu:latest  # Use an image that has the find command
+      - image: sonarsource/sonar-scanner-cli  # Use the official SonarScanner image
     resource_class: small
     steps:
-      - run: apt-get update && apt-get install -y findutils  # Install findutils
       - run: find .
       - attach_workspace:
           at: ~/workspace
@@ -35,7 +32,6 @@ jobs:
             -Dsonar.branch.name="$SONAR_BRANCH" \
             -Dsonar.sources="."
 
-# Orchestrate jobs using workflows
 workflows:
   say-hello-workflow:
     jobs:
