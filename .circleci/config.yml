@@ -15,9 +15,10 @@ jobs:
   sonarqube:
     working_directory: ~/build
     docker:
-      - image: sonarsource/sonar-scanner-cli
+      - image: ubuntu:latest  # Use an image that has the find command
     resource_class: small
     steps:
+      - run: apt-get update && apt-get install -y findutils  # Install findutils
       - run: find .
       - attach_workspace:
           at: ~/workspace
